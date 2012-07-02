@@ -71,21 +71,21 @@ the physical aspect of a country.
 
 \section{Problem Analysis}
 \subsection{Literature study \& reverse engineering}
-Attempts to generate time-space maps back up to the 1960s. Bunge (1962) portrays two
+Attempts to generate time-space maps back up to the 1960s. \citeA{bunge} portrays two
 different time maps for Seattle. The first one uses irregular isochrones (lines of equal travel
 time) to show travel times from a specific origin. In the second one the map is distorted in
 such manner that the isochrones from the origin become concentric circles.
 
-Ewing and Wolfe (1977) interpolate time--space locations of the transportation network
+\citeA{ewing} interpolate time--space locations of the transportation network
 as well as locations outside the network. After obtaining the set of displacement vectors
 they superimpose a uniform grid on the vectors and obtain a warped grid based on the
 influence of the vectors. They employ an inverse distance weighting method to interpolate
-time–space locations of lattice points of the grid. Marchand (1973) uses for the first time
+time–space locations of lattice points of the grid. \citeA{marchand} uses for the first time
 multidimensional scaling.
 
-In the book Distance and Space, Gaterall (1983) summarizes time--space concepts and
-methodologies. He also presents an approach known as Q-analysis (Atkin, 1974, 1981;
-Johnson, 1981). This approach focuses on set relations. The set is represented as a graph
+In the book Distance and Space, \citeA{gatrell} summarizes time--space concepts and
+methodologies. He also presents an approach known as Q-analysis
+\cite{johnson}. This approach focuses on set relations. The set is represented as a graph
 based on the connectivity of the nodes of a network to other nodes, degree of incidence and
 travel times along the connections. However, this generates an abstract graph that is not
 directly comparable with geographic space.
@@ -112,7 +112,7 @@ a transportation network may violate one of the metric space axioms, namely, sym
 The idea of rescaling the physical domain into the temporal domain is old, one of the earliest
 examples of time-scaled maps can be found in Tobler(1961) and Bunge (1962) where they
 present first examples of small-area scaling. Several works about time scaling follow, most
-notable ones are Shimizu (1993) and Spiekerman \& Wegener (1994), in the latter they
+notable ones are \citeA{shimizu} and \citeA{spiekermann}. In the latter they
 construct a two-dimensional time-scaled map of Europe's railroad system using an MDS
 algorithm.
 
@@ -453,6 +453,7 @@ interchangeably.
 Triangulation can be achieved in linear time \cite{chazelle}.
 
 % references
+\nocite{*}
 \bibliographystyle{apacite}
 \bibliography{references}
 
