@@ -8,6 +8,7 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{caption}
+\usepackage{listings}
 \usepackage{enumerate}
 \usepackage{appendix}
 
@@ -66,8 +67,8 @@ the physical aspect of a country.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.5\textwidth]{france.png}
-  \caption{Tempographic map of London}
-  \label{london}
+  \caption{Tempographic map of France}
+  \label{france}
 \end{figure}
 
 \section{Problem Analysis}
@@ -441,12 +442,26 @@ Building a map that outlines the transportation system of a country involves kno
 	
 		This will be represented as a list of cyclic points which build into polygons. A polygon is closed (we have an island) when the next point read is equal to the first one. The list may contain multiple islands.
 		
-		\emph{Example:} (28,19), (81,7), (137,20), (173,49), (129,111), (94,71), (62,82), (65,124), (11,124), (28,19), (202,37), (200,57), (225,62), (223,21), (202,37)
+		\emph{Example:} 
+		\begin{verbatim}
+			(28,19), (81,7), (137,20), (173,49), (129,111), (94,71), (62,82),
+			(65,124), (11,124), (28,19), (202,37), (200,57), (225,62), (223,21),
+			(202,37)
+		\end{verbatim}
 
 	\item List of cities
 	
-		The list will be encoded as a JSON array with each element representing a city. Each component of the array will include the following details: name, position, best travel time to central city.
+		The list will be encoded as a JSON array with each element representing a city. Each component of the array will include the following details: name, position, best travel time to central city indicated in minutes. The first city in the list is the central city.
+		
+		\emph{Example:}
+		\begin{verbatim}
+			[ { "name":"Utrecht", "position": [23,23], "time": 0 },
+			  { "name":"Amersfoort", "position": [18,20], "time": 15 },
+				... ]
+		\end{verbatim}
 \end{enumerate}
+
+For convenience, after the algorithm is applied, the returned result will be in the same format as above but containing the deformed border of the map of the Netherlands and the list of cities with their new position on the map.
 
 \subsection{Algorithmic problem statement}
 
