@@ -508,6 +508,42 @@ island or overlapping other cities).
 
 \subsection{Algorithm development}
 
+The basic algorithm is composed of several steps which are
+systematically described in Figure \ref{alg}. The first values that
+need to be calculated are the city movement vectors, but these are
+highly dependent on the selected time-space scaling (so we choose this
+to minimize the MSE of the distances between old and new
+positions).
+
+We then perform a triangulation of the distance map (see Figure
+\ref{scan}), assuming all edges are elastic springs of spring
+constant $k$. When moving a city from their old position to their new
+one, it may happen that it wants to traverse an edge (another
+spring). In order to make sure the surface of the map is liquidly
+rescaled, we replace the spring with two springs tied in series with
+an equivalent spring constant ($\frac{1}{k} = \frac{1}{k_1} +
+\frac{1}{k_2}$). We then attach the two springs to the city, so the
+city will have two sets of springs in parallel (see Figure
+\ref{springs}). This adjustment ensures that the map is influenced by
+rebellious cities which move beyond the mainland.
+
+It is clear however that such a modification creates the order in
+which to move cities very important. In order to minimize the
+distortion we pick cities to be moved over a small distance first.
+
+The main issue remains simulating the physical phenomenon of chained
+tensions caused in the strings. In general such force-based approaches
+are iterated until the tensions generated on subsequent levels fall
+below a certain threshold $\varepsilon$, but the specifics of the
+implementation are not described in this paper.
+
+The algorithm should satisfy all of the criteria mentioned above, but
+the first: minimum distance between the cities. In order to cater for
+this constraint we need to check violations and assign repulsing
+forces for the pairs of cities which do not satisfy it. Forces
+propagated through the network need to be recalculated through a
+similar algorithm with the one above.
+
 \begin{center}
 \begin{boxedcode}
   \textbf{Input:}
@@ -525,6 +561,40 @@ island or overlapping other cities).
   an island) and continue\\
   \> b) for each city calculate which island it belongs to (point in
   polygon algorithm)\\
+  \\
+  \textbf{Step 2.} \= Calculate optimal time-space scale (minimize
+  MSE)\\
+  \> min $E[(x_i-\alpha x_i')^2+(y_i-\alpha y_i')^2] =$\\
+  \> min $E[\alpha^2(x_i'^2+y_i'^2) - 2\alpha (x_ix_i' + y_iy_i')]$\\
+  \> ($\alpha$ is the time-space conversion factor from time domain to
+  space domain)\\
+  \\
+  \textbf{Step 3.} \= Calculate city movement vectors (see Figure
+  \ref{forces})\\
+  \> $V_i = [(x_i, y_i), (\alpha x_i', \alpha y_i')]$\\
+  \\
+  \textbf{Step 4.} \= Create triangulation\\
+  \> * use a polar ray scanning approach (see Figure \ref{scan})\\
+  \> * triangulate islands and water bays\\
+  \\
+  \textbf{Step 5.} \= Simulate tensions in springs\\
+  \> * sort cities by length of movement vector (ascending)\\
+  \> * pick first city and move it to final location\\
+  \> * the city gains more springs as it traverses triangles (Figure
+  \ref{springs})\\
+  \> * calculate tensions in adjacent springs (breadth-first search)\\
+  \> * stop when tensions are lower than a predefined threshold
+  $\varepsilon$\\
+  \> * fix city in place and repeat for all cities\\
+  \\
+  \textbf{Step. 6} \= Resolve collisions (nodes which break the
+  minimum distance constraint)\\
+  \> * calculate distance required in order to solve collision\\
+  \> * apply half of it for each node as a repulsing force\\
+  \> * recalculate changes in the network\\
+  \> * if a city has been moved in the same iteration more then $K$
+  times,\\\> accept this error as a distance constraint violation\\
+  
 \end{boxedcode}
 
 \captionof{figure}{Pseudocode}
@@ -546,8 +616,36 @@ island or overlapping other cities).
   \label{scan}
 \end{figure}
 
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{springs.png}
+  \caption{Spring tension when traversing a triangle edge}
+  \label{springs}
+\end{figure}
+
+
 \subsection{Efficiency analysis}
-Triangulation can be achieved in linear time \cite{chazelle}.
+We will try to give some rough complexity estimations for the
+general algorithm presented above in the worst case
+scenario. Calculating which island each city belongs to takes $O(nm)$
+time since the number of islands have an upper bound of $O(n)$. The
+optimal time-scale map is a mathematical optimization problem whose
+running time is linear, as well as calculating the movement
+vectors.
+
+Triangulation algorithms are usually implemented in $O(n
+\log{n})$ time, but there are many optimizations to reduce this
+bound. \citeA{chazelle} proved a linear time is achievable for this
+operation, and the ideas have been already implemented in some of the
+libraries available.
+
+Steps 5 and 6 involve simulating a spring network, whose complexity
+depends a lot on the input data (variables $K$, $\varepsilon$, average
+number of triangle traversals). In general, this would achieve a
+running time complexity of $O(n(n+m)^2)$ since for each city ($n$) we
+need to do an adaptation of a breadth-first search ($n+m$ nodes) and
+checking segment intersections (for traversals) would take another
+$n+m$ operations.
 
 % references
 \FloatBarrier

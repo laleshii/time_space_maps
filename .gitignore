@@ -6,5 +6,5 @@
 **.fls
 **.make
 **.temp
-**.pdf
 **.gz
+#**.pdf
