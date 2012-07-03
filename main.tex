@@ -12,6 +12,7 @@
 \usepackage{listings}
 \usepackage{enumerate}
 \usepackage{appendix}
+\usepackage{placeins}
 
 \usepackage{graphicx}
 \graphicspath{{images/}}
@@ -448,12 +449,18 @@ interchangeably.
 
 \subsection{Specification of the input and output}
 
-Building a map that outlines the transportation system of a country involves knowing some initial variables. As our focus was directed towards building a time space map of the Netherlands we will receive as input the following data:
+Building a map that outlines the transportation system of a country
+involves knowing some initial variables. As our focus was directed
+towards building a time space map of the Netherlands we will receive
+as input the following data:
 
 \begin{enumerate}[(i)]
 	\item Map of the Netherlands
 	
-		This will be represented as a list of cyclic points which build into polygons. A polygon is closed (we have an island) when the next point read is equal to the first one. The list may contain multiple islands.
+          This will be represented as a list of cyclic points which
+          build into polygons. A polygon is closed (we have an island)
+          when the next point read is equal to the first one. The list
+          may contain multiple islands.
 		
 		\emph{Example:} 
 		\begin{verbatim}
@@ -464,7 +471,11 @@ Building a map that outlines the transportation system of a country involves kno
 
 	\item List of cities
 	
-		The list will be encoded as a JSON array with each element representing a city. Each component of the array will include the following details: name, position, best travel time to central city indicated in minutes. The first city in the list is the central city.
+          The list will be encoded as a JSON array with each element
+          representing a city. Each component of the array will
+          include the following details: name, position, best travel
+          time to central city indicated in minutes. The first city in
+          the list is the central city.
 		
 		\emph{Example:}
 		\begin{verbatim}
@@ -474,11 +485,26 @@ Building a map that outlines the transportation system of a country involves kno
 		\end{verbatim}
 \end{enumerate}
 
-For convenience, after the algorithm is applied, the returned result will be in the same format as above but containing the deformed border of the map of the Netherlands and the list of cities with their new position on the map.
+For convenience, after the algorithm is applied, the returned result
+will be in the same format as above but containing the deformed border
+of the map of the Netherlands and the list of cities with their new
+position on the map.
 
 \subsection{Algorithmic problem statement}
 
-Consider building a time space map that depicts the weaknesses and strengths of the Netherlands' train transportation system to and from a central city. The word ``central'' should not be used to refer to its position relative to the center of the map but rather as the center of importance to the map reader. As an initial phase it is necessary to calculate the transformation of a map from distance space to travel time space with respect to a central city U. To ensure high readability the distortion of the cities' angle with U should be minimized and the borders should scale relatively to the city movement vectors, restricting cities to not cross a geographical bay. A natural condition should also restrict movement so that islands don't intersect and cities do not travel to invalid areas (on water, another island or overlapping other cities).
+Consider building a time space map that depicts the weaknesses and
+strengths of the Netherlands' train transportation system to and from
+a central city. The word ``central'' should not be used to refer to
+its position relative to the center of the map but rather as the
+center of importance to the map reader. As an initial phase it is
+necessary to calculate the transformation of a map from distance space
+to travel time space with respect to a central city U. To ensure high
+readability the distortion of the cities' angle with U should be
+minimized and the borders should scale relatively to the city movement
+vectors, restricting cities to not cross a geographical bay. A natural
+condition should also restrict movement so that islands don't
+intersect and cities do not travel to invalid areas (on water, another
+island or overlapping other cities).
 
 \subsection{Algorithm development}
 
@@ -524,6 +550,7 @@ Consider building a time space map that depicts the weaknesses and strengths of 
 Triangulation can be achieved in linear time \cite{chazelle}.
 
 % references
+\FloatBarrier
 \nocite{*}
 \bibliographystyle{apacite}
 \bibliography{references}
