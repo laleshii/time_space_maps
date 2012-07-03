@@ -29,6 +29,7 @@ Understanding the travel time relationships in a transportation system can be cr
 to evaluating its performance. Time--space maps try to show an efficient and easy to
 understand portrayal of a transportation network.
 
+
 \subsection{Definition}
 Time space maps are a generalization of the concept of functional spaces where the
 physical distance corresponds to the travel time between locations.
@@ -432,7 +433,25 @@ interchangeably.
 \section{Algorithm design}
 
 \subsection{Specification of the input and output}
+
+Building a map that outlines the transportation system of a country involves knowing some initial variables. As our focus was directed towards building a time space map of the Netherlands we will receive as input the following data:
+
+\begin{enumerate}[(i)]
+	\item Map of the Netherlands
+	
+		This will be represented as a list of cyclic points which build into polygons. A polygon is closed (we have an island) when the next point read is equal to the first one. The list may contain multiple islands.
+		
+		\emph{Example:} (28,19), (81,7), (137,20), (173,49), (129,111), (94,71), (62,82), (65,124), (11,124), (28,19), (202,37), (200,57), (225,62), (223,21), (202,37)
+
+	\item List of cities
+	
+		The list will be encoded as a JSON array with each element representing a city. Each component of the array will include the following details: name, position, best travel time to central city.
+\end{enumerate}
+
 \subsection{Algorithmic problem statement}
+
+The problem is solved.
+
 \subsection{Algorithm development}
 
 \begin{figure}[h!]
